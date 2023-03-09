@@ -4,18 +4,23 @@ LABEL maintainer="gabriel.souza@travelperk.com"
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
+RUN apk add --update --no-cache postgresql-client && \
+    apk add --update --no-cache --virtual .tmp-build-deps \
+        build-base postgresql-dev musl-dev
+
 COPY ./requirements.txt /tmp/requirements.txt
 COPY ./app /app
 
 WORKDIR /app
-EXPOSE 8080
 
 RUN pip install --upgrade pip && \
     pip install -r /tmp/requirements.txt && \
     rm -rf /tmp && \
+    apk del .tmp-build-deps && \
     adduser \
         --disabled-password \
         --no-create-home \
         app
 
+EXPOSE 8080
 USER app
