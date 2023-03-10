@@ -2,7 +2,7 @@ from apps.recipes.models import Recipe
 from apps.recipes.serializers import RecipeSerializer
 from rest_framework import generics
 
-class SnippetList(generics.ListCreateAPIView):
+class RecipeList(generics.ListCreateAPIView):
   serializer_class = RecipeSerializer
 
   def get_queryset(self):
@@ -13,6 +13,6 @@ class SnippetList(generics.ListCreateAPIView):
     return queryset
 
 
-class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
+class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
   queryset = Recipe.objects.all()
   serializer_class = RecipeSerializer
