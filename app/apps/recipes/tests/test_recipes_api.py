@@ -35,6 +35,20 @@ class RecipeTestCase(APITestCase):
     self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(response.data, serializer.data)
 
+  def test_filter_recipes(self):
+    """
+    Test listing recipes with a filter.
+    """
+    create_recipe_with_ingredients()
+    create_recipe_with_ingredients()
+    filtered_recipe = create_recipe_with_ingredients(name="pizza")
+
+    response = self.client.get('/recipes/?name=pizza')
+
+    serializer = RecipeSerializer([filtered_recipe], many=True)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(response.data, serializer.data)
+
 
   def test_create_recipe_missing_ingredients(self):
     """
